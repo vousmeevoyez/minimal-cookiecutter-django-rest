@@ -2,7 +2,11 @@ version : '3.7'
 services:
         django:
                 env_file: .env
-                build: .
+                build: 
+                  context: .
+                  dockerfile: ./dockerfiles/django/Dockerfile
+                  args:
+                    dependencies: ${ENV}
                 image: {{ cookiecutter.project_slug }}
                 entrypoint: ./entrypoint.sh
                 depends_on:
