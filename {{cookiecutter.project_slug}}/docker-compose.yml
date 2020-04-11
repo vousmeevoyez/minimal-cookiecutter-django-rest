@@ -1,0 +1,63 @@
+version : '3.7'
+services:
+        django:
+                env_file: .env
+                build: .
+                image: {{ cookiecutter.project_slug }}
+                entrypoint: ./entrypoint.sh
+                depends_on:
+                - postgres
+                - rabbitmq
+                restart: unless-stopped
+                ports:
+                - 8000:8000
+                logging:
+                  driver: "json-file"
+                  options:
+                    max-size: "100k"
+                    max-file: "10"
+
+        postgres:
+                env_file: .env
+                image: postgres:alpine
+                volumes:
+                - "persist_volume:/var/lib/postgresql/data"
+                restart: unless-stopped
+                logging:
+                  driver: "json-file"
+                  options:
+                    max-size: "100k"
+                    max-file: "10"
+                healthcheck:
+                  test: ["CMD", "pg_isready", "-U", "${POSTGRES_USER}"]
+                  interval: 30s
+                  timeout: 30s
+                  retries: 3
+
+        rabbitmq:
+                env_file: .env
+                image: rabbitmq:3-management
+                restart: unless-stopped
+                logging:
+                  driver: "json-file"
+                  options:
+                    max-size: "100k"
+                    max-file: "10"
+
+        celery:
+                env_file: .env
+                image: {{ cookiecutter.project_slug }}
+                command: celery -A api worker -l info
+                depends_on:
+                - django
+                - rabbitmq
+                - postgres
+                restart: unless-stopped
+                logging:
+                  driver: "json-file"
+                  options:
+                    max-size: "100k"
+                    max-file: "10"
+
+volumes:
+        persist_volume:
