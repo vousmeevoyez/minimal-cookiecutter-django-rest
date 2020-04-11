@@ -1,10 +1,5 @@
 [run]
-branch = True
-omit = *migrations*,
-       *urls*,
-       *test*,
-       *admin*,
-       ./manage.py,
-       ./{{ cookiecutter.app_name }}/config/*,
-       ./{{ cookiecutter.app_name }}/wsgi.py,
-       *__init__*
+include = {{cookiecutter.project_slug}}/*
+omit = *migrations*, *tests*
+plugins =
+    django_coverage_plugin
