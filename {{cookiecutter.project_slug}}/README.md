@@ -88,8 +88,6 @@ Deployment
 ----------
 
 The following details how to deploy this application.
-{% if cookiecutter.use_heroku.lower() == "y" %}
-
 
 Docker
 ^^^^^^
