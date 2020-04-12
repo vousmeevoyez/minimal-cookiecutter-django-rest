@@ -5,6 +5,8 @@ COPY ./requirements /requirements
 RUN pip install -r /requirements/${dependencies}.txt
 WORKDIR /app
 COPY . /app
+COPY ./dockerfiles/django/start /start
+RUN sed -i 's/\r$//g' /start
 RUN chmod +x /start
 
 # second stage build
