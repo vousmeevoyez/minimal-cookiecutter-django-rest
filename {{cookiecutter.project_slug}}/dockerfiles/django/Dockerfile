@@ -5,7 +5,6 @@ COPY ./requirements /requirements
 RUN pip install -r /requirements/${dependencies}.txt
 WORKDIR /app
 COPY . /app
-RUN sed -i 's/\r$//g' /start
 RUN chmod +x /start
 
 # second stage build
