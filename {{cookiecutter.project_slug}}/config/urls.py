@@ -1,7 +1,7 @@
 from django.urls import include, path
 
 # API URLS
-urlpatterns += [
+urlpatterns = [
     # API base url
     path("api/", include("config.api_router")),
 ]
