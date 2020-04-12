@@ -1,14 +1,11 @@
 from django.urls import path
 
-from {{ cookiecutter.project_slug }}.users.views import (
-    user_detail_view,
-    user_redirect_view,
-    user_update_view,
-)
+from rest_framework.routers import SimpleRouter
+from {{ cookiecutter.project_slug }}.users.views import UserViewSet
 
-app_name = "users"
+router = SimpleRouter()
+router.register(r"users", UserViewSet)
+
 urlpatterns = [
-    path("~redirect/", view=user_redirect_view, name="redirect"),
-    path("~update/", view=user_update_view, name="update"),
-    path("<str:username>/", view=user_detail_view, name="detail"),
+    path("", include(router.urls))
 ]
